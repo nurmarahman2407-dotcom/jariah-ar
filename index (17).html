@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JARIAH AR — Panduan Pengurusan Jenazah Interaktif</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0d2318 0%, #1a4a2e 50%, #0d2318 100%);
+      min-height: 100vh;
+      color: white;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      text-align: center;
+      padding: 40px 20px 20px;
+      background: rgba(0,0,0,0.3);
+      border-bottom: 1px solid rgba(0,200,83,0.3);
+    }
+
+    .logo {
+      font-size: 48px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #00c853, #FFD700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 4px;
+    }
+
+    .logo-sub {
+      font-size: 13px;
+      color: #90EE90;
+      letter-spacing: 6px;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    .tagline {
+      margin-top: 12px;
+      font-size: 15px;
+      color: #ccc;
+      font-style: italic;
+    }
+
+    /* ===== BADGES ===== */
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 16px 20px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .badge {
+      background: rgba(0,200,83,0.15);
+      border: 1px solid rgba(0,200,83,0.5);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12px;
+      color: #90EE90;
+    }
+
+    /* ===== MAIN BUTTON ===== */
+    .start-section {
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .btn-start {
+      display: inline-block;
+      background: linear-gradient(135deg, #00c853, #00a040);
+      color: white;
+      text-decoration: none;
+      padding: 18px 48px;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 6px 30px rgba(0,200,83,0.4);
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-start:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(0,200,83,0.6);
+    }
+
+    .btn-start span { font-size: 22px; margin-right: 8px; }
+
+    /* ===== MODULE CARDS ===== */
+    .section-title {
+      text-align: center;
+      padding: 10px 20px 20px;
+      font-size: 14px;
+      color: #90EE90;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      padding: 0 20px 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .module-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .module-card:hover {
+      background: rgba(0,200,83,0.1);
+      border-color: rgba(0,200,83,0.4);
+      transform: translateY(-4px);
+    }
+
+    .module-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .module-icon {
+      font-size: 32px;
+      width: 52px;
+      height: 52px;
+      background: rgba(0,200,83,0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .module-num {
+      font-size: 11px;
+      color: #00c853;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .module-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .module-desc {
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .module-marker {
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #FFD700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ===== HOW TO USE ===== */
+    .how-to {
+      background: rgba(0,0,0,0.3);
+      padding: 30px 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .how-to h2 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 24px;
+      color: #FFD700;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .step-item {
+      text-align: center;
+      padding: 16px;
+    }
+
+    .step-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00c853, #00a040);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      margin: 0 auto 12px;
+    }
+
+    .step-icon { font-size: 28px; margin-bottom: 8px; }
+    .step-text { font-size: 13px; color: #ccc; line-height: 1.5; }
+
+    /* ===== DOWNLOAD MARKERS ===== */
+    .markers-section {
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      border: 2px solid #FFD700;
+      color: #FFD700;
+      text-decoration: none;
+      padding: 12px 32px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: bold;
+      transition: all 0.3s;
+      margin: 6px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,215,0,0.15);
+    }
+
+    /* ===== SDG BADGES ===== */
+    .sdg-section {
+      background: rgba(0,0,0,0.2);
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .sdg-section h3 { font-size: 14px; color: #aaa; margin-bottom: 14px; letter-spacing: 2px; }
+
+    .sdg-chips {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .sdg-chip {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #666;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    footer span { color: #00c853; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">JARIAH AR</div>
+    <div class="logo-sub">Jejak Amal Rukun Islam Akhir — Augmented Reality</div>
+    <p class="tagline">"Alat Bantuan Mengajar Pengurusan Jenazah Interaktif"</p>
+  </header>
+
+  <!-- BADGES -->
+  <div class="badges">
+    <span class="badge">🏫 Pendidikan Islam IPMA/MRSM</span>
+    <span class="badge">📱 Zero Install — Guna Browser Sahaja</span>
+    <span class="badge">💰 Kos Sifar</span>
+    <span class="badge">🔬 Teknologi 4IR</span>
+    <span class="badge">📖 Fardhu Kifayah</span>
+  </div>
+
+  <!-- START BUTTON -->
+  <div class="start-section">
+    <a href="ar.html" class="btn-start">
+      <span>📷</span> Mula Pengalaman AR
+    </a>
+    <p style="margin-top:14px; font-size:13px; color:#888;">
+      Pastikan worksheet & marker sudah dicetak sebelum memulakan
+    </p>
+  </div>
+
+  <!-- MODULE OVERVIEW -->
+  <p class="section-title">🕌 5 Modul Pengurusan Jenazah</p>
+
+  <div class="modules-grid">
+
+    <div class="module-card">
+      <div class="module-header">
+        <div class="module-icon">🏥</div>
+        <div>
+          <div class="module-num">Modul 1</div>
+          <div class="module-title">Sebelum Meninggal Dunia</div>
+        </div>
+      </div>
+      <p class="module-desc">Adab menjaga pesakit hampir mati, cara membimbing talqin, bacaan Surah Yasin, dan tanda-tanda kematian secara visual AR.</p>
+      <div class="module-marker">🎯 Scan: HIRO Marker (bulatan kotak)</div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header">
+        <div class="module-icon">💧</div>
+        <div>
+          <div class="module-num">Modul 2A</div>
+          <div class="module-title">Memandikan Jenazah</div>
+        </div>
+      </div>
+      <p class="module-desc">Panduan lengkap 8 langkah memandikan jenazah dengan animasi aliran air AR, kiraan basuhan, dan dalil hadith berkaitan.</p>
+      <div class="module-marker">🎯 Scan: KANJI Marker (tulisan kanji)</div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header">
+        <div class="module-icon">🕊️</div>
+        <div>
+          <div class="module-num">Modul 2B</div>
+          <div class="module-title">Mengkafankan Jenazah</div>
+        </div>
+      </div>
+      <p class="module-desc">Visualisasi 3D lapisan kain kafan lelaki (3 helai) dan perempuan (5 helai) dengan panduan cara balutan yang betul.</p>
+      <div class="module-marker">🎯 Scan: BARCODE Marker — Nilai 0</div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header">
+        <div class="module-icon">🤲</div>
+        <div>
+          <div class="module-num">Modul 2C</div>
+          <div class="module-title">Menyolatkan Jenazah</div>
+        </div>
+      </div>
+      <p class="module-desc">Panduan 4 Takbir solat jenazah, kedudukan imam, susunan saf, bacaan dan teks doa yang muncul pada waktu yang tepat.</p>
+      <div class="module-marker">🎯 Scan: BARCODE Marker — Nilai 1</div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header">
+        <div class="module-icon">⚰️</div>
+        <div>
+          <div class="module-num">Modul 2D</div>
+          <div class="module-title">Mengebumikan Jenazah</div>
+        </div>
+      </div>
+      <p class="module-desc">Keratan rentas kubur 3D, prosedur pengkebumian langkah demi langkah, arah Qiblat AR, dan doa selepas pengkebumian.</p>
+      <div class="module-marker">🎯 Scan: BARCODE Marker — Nilai 2</div>
+    </div>
+
+    <div class="module-card">
+      <div class="module-header">
+        <div class="module-icon">✨</div>
+        <div>
+          <div class="module-num">Modul 3</div>
+          <div class="module-title">Pengajaran & Hikmah</div>
+        </div>
+      </div>
+      <p class="module-desc">Refleksi hikmah pengurusan jenazah, 3 amalan tidak terputus selepas mati, dan persediaan diri untuk akhirat.</p>
+      <div class="module-marker">🎯 Scan: BARCODE Marker — Nilai 3</div>
+    </div>
+
+  </div>
+
+  <!-- HOW TO USE -->
+  <div class="how-to">
+    <h2>📋 Cara Penggunaan</h2>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-icon">🖨️</div>
+        <div class="step-num">1</div>
+        <p class="step-text">Cetak worksheet & marker dari fail <strong>worksheet.html</strong></p>
+      </div>
+      <div class="step-item">
+        <div class="step-icon">🌐</div>
+        <div class="step-num">2</div>
+        <p class="step-text">Buka URL JARIAH AR dalam Chrome / Safari telefon pintar</p>
+      </div>
+      <div class="step-item">
+        <div class="step-icon">📷</div>
+        <div class="step-num">3</div>
+        <p class="step-text">Tekan <strong>"Mula AR"</strong> dan izinkan akses kamera</p>
+      </div>
+      <div class="step-item">
+        <div class="step-icon">🎯</div>
+        <div class="step-num">4</div>
+        <p class="step-text">Arahkan kamera ke marker berkaitan modul yang dikaji</p>
+      </div>
+      <div class="step-item">
+        <div class="step-icon">🔍</div>
+        <div class="step-num">5</div>
+        <p class="step-text">Kandungan AR muncul! Terokai, baca, dan fahami</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD BUTTONS -->
+  <div class="markers-section">
+    <h3 style="margin-bottom:16px; color:#FFD700;">📥 Muat Turun Bahan</h3>
+    <a href="worksheet.html" class="btn-secondary" target="_blank">🖨️ Cetak Worksheet + Marker</a>
+    <a href="ar.html" class="btn-secondary">📷 Buka Pengalaman AR</a>
+  </div>
+
+  <!-- SDG MAPPING -->
+  <div class="sdg-section">
+    <h3>MATLAMAT PEMBANGUNAN MAMPAN (SDG)</h3>
+    <div class="sdg-chips">
+      <span class="sdg-chip" style="background:#4C9F38; color:white;">SDG 3 — Kesihatan & Kesejahteraan</span>
+      <span class="sdg-chip" style="background:#C5192D; color:white;">SDG 4 — Pendidikan Berkualiti</span>
+      <span class="sdg-chip" style="background:#FF3A21; color:white;">SDG 10 — Kurangkan Ketidaksamaan</span>
+      <span class="sdg-chip" style="background:#00689D; color:white;">SDG 16 — Keamanan & Institusi</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>JARIAH AR © 2026 — <span>Inovasi i-ABM i-MARATeCH 2026</span></p>
+    <p style="margin-top:6px;">Pembangunan: AR.js + A-Frame | Hosting: GitHub Pages | Kos: RM 0</p>
+  </footer>
+
+</body>
+</html>

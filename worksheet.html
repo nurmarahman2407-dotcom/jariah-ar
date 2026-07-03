@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <title>JARIAH AR — Worksheet & Marker (Cetak)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: white; color: black; }
+
+    @media print {
+      .no-print { display: none !important; }
+      .page-break { page-break-before: always; }
+      body { background: white; }
+    }
+
+    /* ===== PRINT INSTRUCTIONS ===== */
+    .no-print {
+      background: #1a4a2e;
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .no-print h2 { font-size: 16px; }
+    .no-print p { font-size: 13px; color: #90EE90; margin-top: 4px; }
+    .print-btn {
+      background: #00c853;
+      color: black;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* ===== PAGE LAYOUT ===== */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 10px auto;
+      background: white;
+      border: 1px solid #ddd;
+      padding: 15mm;
+    }
+
+    /* ===== PAGE HEADER ===== */
+    .page-header {
+      text-align: center;
+      border-bottom: 3px solid #1a4a2e;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    .page-header h1 {
+      font-size: 24px;
+      color: #1a4a2e;
+      font-weight: 900;
+      letter-spacing: 3px;
+    }
+    .page-header h2 {
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+      font-weight: normal;
+    }
+    .page-header .subtitle {
+      font-size: 11px;
+      color: #999;
+      margin-top: 3px;
+    }
+
+    /* ===== INSTRUCTIONS BOX ===== */
+    .instructions {
+      background: #f0f8f0;
+      border: 1px solid #1a4a2e;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 12px;
+    }
+    .instructions h3 {
+      color: #1a4a2e;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .instructions ol { padding-left: 16px; line-height: 1.8; }
+
+    /* ===== MARKER GRID ===== */
+    .markers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .marker-card {
+      border: 2px solid #1a4a2e;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .marker-header {
+      background: #1a4a2e;
+      color: white;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .marker-header .mod-num {
+      color: #FFD700;
+      font-size: 10px;
+      display: block;
+    }
+
+    .marker-body {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .marker-image-box {
+      width: 80px;
+      height: 80px;
+      border: 3px solid #000;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 9px;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Hiro marker CSS simulation */
+    .hiro-marker {
+      background: white;
+      position: relative;
+      width: 74px;
+      height: 74px;
+    }
+    .hiro-outer {
+      position: absolute;
+      top: 4px; left: 4px;
+      right: 4px; bottom: 4px;
+      border: 6px solid black;
+    }
+    .hiro-inner {
+      position: absolute;
+      top: 18px; left: 18px;
+      right: 18px; bottom: 18px;
+      border: 4px solid black;
+      border-radius: 50%;
+    }
+
+    /* Kanji marker CSS simulation */
+    .kanji-marker {
+      background: white;
+      width: 74px;
+      height: 74px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 6px solid black;
+      font-size: 34px;
+      font-family: serif;
+    }
+
+    /* Barcode matrix 3x3 */
+    .barcode-marker {
+      background: white;
+      width: 74px;
+      height: 74px;
+      position: relative;
+      border: 6px solid black;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 1px;
+      padding: 3px;
+    }
+    .bc-cell { background: white; }
+    .bc-cell.black { background: black; }
+
+    .marker-info { flex: 1; font-size: 11px; }
+    .marker-info .mod-title { font-weight: bold; font-size: 12px; color: #1a4a2e; margin-bottom: 4px; }
+    .marker-info .mod-content { color: #444; line-height: 1.5; }
+    .marker-info .scan-label {
+      display: inline-block;
+      background: #FFD700;
+      color: #000;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-top: 5px;
+    }
+
+    /* ===== WORKSHEET SECTION ===== */
+    .worksheet {
+      margin-top: 20px;
+      border: 2px solid #1a4a2e;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .worksheet-header {
+      background: #1a4a2e;
+      color: white;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .worksheet-body { padding: 16px; }
+
+    .student-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .info-field {
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 4px;
+      font-size: 11px;
+      color: #666;
+    }
+    .info-field span { display: block; height: 20px; }
+
+    .question-section h4 {
+      font-size: 12px;
+      color: #1a4a2e;
+      margin: 12px 0 8px;
+      font-weight: bold;
+    }
+    .question {
+      font-size: 11px;
+      margin-bottom: 8px;
+      padding: 6px 8px;
+      background: #f9f9f9;
+      border-radius: 4px;
+      line-height: 1.6;
+    }
+    .q-num { font-weight: bold; color: #1a4a2e; }
+    .answer-line {
+      border-bottom: 1px dotted #ccc;
+      height: 20px;
+      margin-top: 4px;
+    }
+
+    .mcq-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .option {
+      font-size: 11px;
+      padding: 2px 6px;
+    }
+    .option-circle {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 1px solid #333;
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PRINT INSTRUCTIONS (hidden on print) -->
+  <div class="no-print">
+    <div>
+      <h2>🖨️ JARIAH AR — Worksheet & Marker</h2>
+      <p>Cetak halaman ini untuk penggunaan dalam kelas AR. Pastikan skala 100% (jangan "Fit to page")</p>
+    </div>
+    <button class="print-btn" onclick="window.print()">🖨️ Cetak Sekarang</button>
+  </div>
+
+  <!-- =========================================
+       HALAMAN 1 — MARKER SHEET
+  ========================================= -->
+  <div class="page">
+
+    <div class="page-header">
+      <h1>JARIAH AR</h1>
+      <h2>Jejak Amal Rukun Islam Akhir — Augmented Reality</h2>
+      <p class="subtitle">Panduan Pengurusan Jenazah Interaktif | Pendidikan Islam IPMA/MRSM | i-MARATeCH 2026</p>
+    </div>
+
+    <div class="instructions">
+      <h3>📋 Arahan Penggunaan:</h3>
+      <ol>
+        <li>Buka URL JARIAH AR dalam <strong>Chrome / Safari</strong> pada telefon pintar atau tablet anda</li>
+        <li>Tekan butang <strong>"Mula Pengalaman AR"</strong> dan izinkan akses kamera apabila diminta</li>
+        <li>Pilih modul yang ingin dikaji dari panel bawah skrin</li>
+        <li>Arahkan kamera telefon ke <strong>marker yang berkaitan</strong> pada helaian ini</li>
+        <li>Kandungan AR akan muncul di atas marker — terokai dan pelajari!</li>
+        <li>Jawab soalan dalam bahagian Worksheet di bawah semasa / selepas menggunakan AR</li>
+      </ol>
+    </div>
+
+    <!-- MARKERS -->
+    <div class="markers-grid">
+
+      <!-- MODUL 1: HIRO -->
+      <div class="marker-card">
+        <div class="marker-header">
+          <span class="mod-num">MODUL 1</span>
+          Sebelum Meninggal Dunia
+        </div>
+        <div class="marker-body">
+          <div class="marker-image-box">
+            <div class="hiro-marker">
+              <div class="hiro-outer"></div>
+              <div class="hiro-inner"></div>
+            </div>
+          </div>
+          <div class="marker-info">
+            <div class="mod-title">Adab Akhir Hayat</div>
+            <div class="mod-content">
+              Talqin, Surah Yasin, tanda kematian, adab menjaga pesakit
+            </div>
+            <span class="scan-label">HIRO Marker</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODUL 2A: KANJI -->
+      <div class="marker-card">
+        <div class="marker-header">
+          <span class="mod-num">MODUL 2A</span>
+          Memandikan Jenazah
+        </div>
+        <div class="marker-body">
+          <div class="marker-image-box">
+            <div class="kanji-marker">木</div>
+          </div>
+          <div class="marker-info">
+            <div class="mod-title">8 Langkah Mandian</div>
+            <div class="mod-content">
+              Niat, urutan basuhan, bilangan ganjil, kapur barus
+            </div>
+            <span class="scan-label">KANJI Marker</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODUL 2B: BARCODE 0 -->
+      <div class="marker-card">
+        <div class="marker-header">
+          <span class="mod-num">MODUL 2B</span>
+          Mengkafankan Jenazah
+        </div>
+        <div class="marker-body">
+          <div class="marker-image-box">
+            <div class="barcode-marker">
+              <!-- 3x3 barcode pattern for value 0: 000 / 010 / 000 -->
+              <div class="bc-cell"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell"></div>
+            </div>
+          </div>
+          <div class="marker-info">
+            <div class="mod-title">Kafan Lelaki & Perempuan</div>
+            <div class="mod-content">
+              3 helai (lelaki), 5 helai (perempuan), cara balutan
+            </div>
+            <span class="scan-label">BARCODE — 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODUL 2C: BARCODE 1 -->
+      <div class="marker-card">
+        <div class="marker-header">
+          <span class="mod-num">MODUL 2C</span>
+          Menyolatkan Jenazah
+        </div>
+        <div class="marker-body">
+          <div class="marker-image-box">
+            <div class="barcode-marker">
+              <!-- Pattern for value 1: 001 / 010 / 100 -->
+              <div class="bc-cell"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell"></div>
+            </div>
+          </div>
+          <div class="marker-info">
+            <div class="mod-title">4 Takbir Solat Jenazah</div>
+            <div class="mod-content">
+              Niat, bacaan, kedudukan imam, saf, tiada rukuk/sujud
+            </div>
+            <span class="scan-label">BARCODE — 1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODUL 2D: BARCODE 2 -->
+      <div class="marker-card">
+        <div class="marker-header">
+          <span class="mod-num">MODUL 2D</span>
+          Mengebumikan Jenazah
+        </div>
+        <div class="marker-body">
+          <div class="marker-image-box">
+            <div class="barcode-marker">
+              <!-- Pattern for value 2: 010 / 101 / 010 -->
+              <div class="bc-cell"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell"></div>
+            </div>
+          </div>
+          <div class="marker-info">
+            <div class="mod-title">Prosedur Pengkebumian</div>
+            <div class="mod-content">
+              Lahad, arah Qiblat, talkin, 3 genggam tanah, doa
+            </div>
+            <span class="scan-label">BARCODE — 2</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODUL 3: BARCODE 3 -->
+      <div class="marker-card">
+        <div class="marker-header">
+          <span class="mod-num">MODUL 3</span>
+          Pengajaran & Hikmah
+        </div>
+        <div class="marker-body">
+          <div class="marker-image-box">
+            <div class="barcode-marker">
+              <!-- Pattern for value 3: 011 / 110 / 011 -->
+              <div class="bc-cell"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell"></div>
+              <div class="bc-cell black"></div>
+              <div class="bc-cell black"></div>
+            </div>
+          </div>
+          <div class="marker-info">
+            <div class="mod-title">Refleksi & Hikmah</div>
+            <div class="mod-content">
+              3 amalan tidak putus, hikmah kematian, persediaan akhirat
+            </div>
+            <span class="scan-label">BARCODE — 3</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end markers-grid -->
+
+    <!-- WORKSHEET -->
+    <div class="worksheet">
+      <div class="worksheet-header">📝 WORKSHEET PELAJAR — JARIAH AR</div>
+      <div class="worksheet-body">
+
+        <div class="student-info">
+          <div class="info-field">Nama: <span></span></div>
+          <div class="info-field">No. Matrik / Tingkatan: <span></span></div>
+          <div class="info-field">Kursus / Kelas: <span></span></div>
+          <div class="info-field">Tarikh: <span></span></div>
+        </div>
+
+        <div class="question-section">
+          <h4>BAHAGIAN A — SOALAN OBJEKTIF (Pilih jawapan terbaik)</h4>
+
+          <div class="question">
+            <span class="q-num">1.</span> Apakah hukum mengurus jenazah Muslim?
+            <div class="mcq-options">
+              <div class="option"><span class="option-circle"></span>A. Fardhu Ain</div>
+              <div class="option"><span class="option-circle"></span>B. Fardhu Kifayah</div>
+              <div class="option"><span class="option-circle"></span>C. Sunat Muakkad</div>
+              <div class="option"><span class="option-circle"></span>D. Harus</div>
+            </div>
+          </div>
+
+          <div class="question">
+            <span class="q-num">2.</span> Bilangan helai kain kafan yang betul bagi jenazah lelaki ialah?
+            <div class="mcq-options">
+              <div class="option"><span class="option-circle"></span>A. 2 helai</div>
+              <div class="option"><span class="option-circle"></span>B. 3 helai</div>
+              <div class="option"><span class="option-circle"></span>C. 4 helai</div>
+              <div class="option"><span class="option-circle"></span>D. 5 helai</div>
+            </div>
+          </div>
+
+          <div class="question">
+            <span class="q-num">3.</span> Bilangan takbir dalam solat jenazah ialah?
+            <div class="mcq-options">
+              <div class="option"><span class="option-circle"></span>A. 3 takbir</div>
+              <div class="option"><span class="option-circle"></span>B. 4 takbir</div>
+              <div class="option"><span class="option-circle"></span>C. 5 takbir</div>
+              <div class="option"><span class="option-circle"></span>D. 7 takbir</div>
+            </div>
+          </div>
+
+          <div class="question">
+            <span class="q-num">4.</span> Semasa mengebumikan, arah manakah yang perlu dihadap oleh jenazah?
+            <div class="mcq-options">
+              <div class="option"><span class="option-circle"></span>A. Menghadap utara</div>
+              <div class="option"><span class="option-circle"></span>B. Menghadap kiblat</div>
+              <div class="option"><span class="option-circle"></span>C. Menghadap timur</div>
+              <div class="option"><span class="option-circle"></span>D. Menghadap selatan</div>
+            </div>
+          </div>
+
+          <h4>BAHAGIAN B — SOALAN STRUKTUR</h4>
+
+          <div class="question">
+            <span class="q-num">5.</span> Nyatakan 3 langkah terpenting dalam memandikan jenazah mengikut urutan yang betul:
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+          </div>
+
+          <div class="question">
+            <span class="q-num">6.</span> Apakah bacaan yang disunatkan semasa memasukkan jenazah ke dalam kubur?
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+          </div>
+
+          <div class="question">
+            <span class="q-num">7.</span> Berikan SATU hikmah yang anda pelajari daripada topik pengurusan jenazah ini:
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end page -->
+
+</body>
+</html>
