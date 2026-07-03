@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>JARIAH AR</title>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { overflow:hidden; background:#000; }
+    #ui {
+      position:fixed; bottom:0; left:0; right:0;
+      background:rgba(0,0,0,0.92);
+      border-top:2px solid #00c853;
+      z-index:999; padding:10px 0 18px;
+    }
+    #mod-info {
+      text-align:center; font-size:13px; color:#00c853;
+      font-family:Arial; padding:0 16px 8px;
+      font-weight:bold; line-height:1.6;
+    }
+    #tabs {
+      display:flex; gap:6px; overflow-x:auto;
+      padding:0 10px; scrollbar-width:none;
+    }
+    #tabs::-webkit-scrollbar { display:none; }
+    .tab {
+      flex-shrink:0; padding:8px 14px; border-radius:16px;
+      border:1px solid rgba(0,200,83,0.5); background:transparent;
+      color:#90EE90; cursor:pointer; font-size:12px;
+      font-family:Arial; white-space:nowrap;
+    }
+    .tab.on { background:#00c853; color:#000; font-weight:bold; }
+    #hint {
+      position:fixed; top:14px; left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,0.85); color:white;
+      padding:8px 20px; border-radius:20px;
+      font-size:13px; font-family:Arial; z-index:999;
+      text-align:center; max-width:90vw;
+      border:1px solid rgba(255,255,255,0.2);
+    }
+    #hint.found {
+      background:rgba(0,130,0,0.92);
+      border-color:#00c853;
+    }
+    #home {
+      position:fixed; top:14px; right:14px;
+      background:rgba(0,0,0,0.75);
+      border:1px solid rgba(255,255,255,0.3);
+      color:white; width:42px; height:42px;
+      border-radius:50%; font-size:20px;
+      cursor:pointer; z-index:999;
+      display:flex; align-items:center; justify-content:center;
+    }
+  </style>
+</head>
+<body>
+
+<div id="hint">📸 Arahkan kamera ke marker</div>
+<button id="home" onclick="location='index.html'">🏠</button>
+
+<a-scene
+  vr-mode-ui="enabled:false"
+  renderer="logarithmicDepthBuffer:true; precision:medium; antialias:true;"
+  arjs="trackingMethod:best; sourceType:webcam;
+        debugUIEnabled:false;
+        detectionMode:mono_and_matrix;
+        matrixCodeType:3x3;">
+
+  <!-- ══════════════════════════════════
+  MODUL 1 — HIRO — Sebelum Meninggal
+  ══════════════════════════════════ -->
+  <a-marker preset="hiro">
+    <!-- Panel utama -->
+    <a-plane position="0 0.01 0" rotation="-90 0 0"
+             width="3" height="2.4"
+             color="#0a2010" opacity="0.98"></a-plane>
+
+    <!-- Header kuning -->
+    <a-plane position="0 0.02 0.95" rotation="-90 0 0"
+             width="3" height="0.38" color="#1a5c2e"></a-plane>
+    <a-text value="MODUL 1: SEBELUM MENINGGAL"
+            position="0 0.03 0.95" rotation="-90 0 0"
+            color="#FFD700" width="5" align="center"></a-text>
+
+    <!-- Hukum -->
+    <a-text value="HUKUM: SUNAT mengingati kematian"
+            position="0 0.03 0.6" rotation="-90 0 0"
+            color="#00FF88" width="5" align="center"></a-text>
+
+    <!-- 8 tanda -->
+    <a-text value="8 TANDA KEMATIAN:"
+            position="-0.55 0.03 0.25" rotation="-90 0 0"
+            color="#FFD700" width="4" align="left"></a-text>
+    <a-text value="1. Tapak kaki lurus ke hadapan
+2. Hidung jatuh, pucat, tak berpeluh
+3. Perantara sendi renggang
+4. Lidah kelu, tertutup selera
+5. Tak kenal keluarga terdekat
+6. Terlalu dahaga, minta air
+7. Tiada timbal balik pernafasan
+8. Perubahan tabiat"
+            position="-0.55 0.03 -0.2"
+            rotation="-90 0 0"
+            color="#FFFFFF" width="4" align="left"></a-text>
+
+    <!-- Pesakit nazak -->
+    <a-text value="SUNAT PESAKIT NAZAK:"
+            position="0.95 0.03 0.25" rotation="-90 0 0"
+            color="#FFD700" width="3" align="left"></a-text>
+    <a-text value="✓ Ajar Lailahaillallah
+✓ Baca Surah Yasin
+✓ Titiskan air ke bibir"
+            position="0.95 0.03 -0.05" rotation="-90 0 0"
+            color="#FFFFFF" width="3" align="left"></a-text>
+
+    <!-- Footer -->
+    <a-plane position="0 0.02 -0.9" rotation="-90 0 0"
+             width="3" height="0.28" color="#1a3a20"></a-plane>
+    <a-text value="Ali Imran:185 — Tiap yang bernyawa akan merasai mati"
+            position="0 0.03 -0.9" rotation="-90 0 0"
+            color="#90EE90" width="5" align="center"></a-text>
+
+    <!-- Bola animasi -->
+    <a-sphere position="0 0.9 0" radius="0.07" color="#FFD700">
+      <a-animation attribute="position"
+                   from="0 0.5 0" to="0 1.2 0"
+                   direction="alternate" dur="2000"
+                   repeat="indefinite"></a-animation>
+    </a-sphere>
+  </a-marker>
+
+  <!-- ══════════════════════════════════
+  MODUL 2A — KANJI — Memandikan
+  ══════════════════════════════════ -->
+  <a-marker preset="kanji">
+    <a-plane position="0 0.01 0" rotation="-90 0 0"
+             width="3" height="2.6"
+             color="#000f20" opacity="0.98"></a-plane>
+
+    <a-plane position="0 0.02 1.05" rotation="-90 0 0"
+             width="3" height="0.38" color="#003366"></a-plane>
+    <a-text value="MODUL 2A: MEMANDIKAN JENAZAH"
+            position="0 0.03 1.05" rotation="-90 0 0"
+            color="#87CEEB" width="5" align="center"></a-text>
+
+    <a-text value="9 LANGKAH MEMANDIKAN:"
+            position="0 0.03 0.7" rotation="-90 0 0"
+            color="#FFD700" width="5" align="center"></a-text>
+
+    <a-text value="1. Bersihkan anggota badan jenazah
+2. Istinja qubul dan dubur jenazah
+3. Bersugi dan bersuci
+4. Mandikan bahagian HADAPAN
+5. Mandikan bahagian BELAKANG
+6. Wudukkan anggota wuduk jenazah
+7. Mandian Akhir: Air Mutlak
+8. Mandian Akhir: Air Daun Bidara
+9. Mandian Akhir: Air Kapur Barus"
+            position="0 0.03 0.05" rotation="-90 0 0"
+            color="#FFFFFF" width="5" align="left"></a-text>
+
+    <a-plane position="0 0.02 -0.9" rotation="-90 0 0"
+             width="3" height="0.35" color="#550000"></a-plane>
+    <a-text value="PENTING: Lelaki mandikan lelaki | Perempuan mandikan perempuan"
+            position="0 0.03 -0.9" rotation="-90 0 0"
+            color="#FFD700" width="5" align="center"></a-text>
+
+    <a-sphere position="-0.4 0.7 0.9" radius="0.05" color="#4488FF">
+      <a-animation attribute="position"
+                   from="-0.4 0.9 0.9" to="-0.4 0.1 0.9"
+                   dur="1000" repeat="indefinite"
+                   easing="easeInQuad"></a-animation>
+    </a-sphere>
+    <a-sphere position="0.4 0.7 0.9" radius="0.05" color="#66AAFF">
+      <a-animation attribute="position"
+                   from="0.4 0.9 0.9" to="0.4 0.1 0.9"
+                   dur="1300" repeat="indefinite"
+                   easing="easeInQuad"></a-animation>
+    </a-sphere>
+  </a-marker>
+
+  <!-- ══════════════════════════════════
+  MODUL 2B — BARCODE 0 — Mengkafan
+  ══════════════════════════════════ -->
+  <a-marker type="barcode" value="0">
+    <a-plane position="0 0.01 0" rotation="-90 0 0"
+             width="3" height="2.4"
+             color="#0d0025" opacity="0.98"></a-plane>
+
+    <a-plane position="0 0.02 0.95" rotation="-90 0 0"
+             width="3" height="0.38" color="#2d0055"></a-plane>
+    <a-text value="MODUL 2B: MENGKAFANKAN JENAZAH"
+            position="0 0.03 0.95" rotation="-90 0 0"
+            color="#FFB6C1" width="5" align="center"></a-text>
+
+    <a-text value="KAFAN LELAKI — 3 Helai:"
+            position="-0.5 0.03 0.55" rotation="-90 0 0"
+            color="#FFD700" width="4" align="left"></a-text>
+    <a-text value="• 2 helai kain kafan
+• 1 helai baju
+• Balut kanan dahulu
+• Ikat 3 simpulan"
+            position="-0.5 0.03 0.22" rotation="-90 0 0"
+            color="#FFFFFF" width="4" align="left"></a-text>
+
+    <a-text value="KAFAN PEREMPUAN — 5 Helai:"
+            position="0.9 0.03 0.55" rotation="-90 0 0"
+            color="#FFD700" width="3.5" align="left"></a-text>
+    <a-text value="• 3 helai kain kafan
+• 1 helai baju
+• 1 set telekung
+• Rambut ke hadapan"
+            position="0.9 0.03 0.22" rotation="-90 0 0"
+            color="#FFFFFF" width="3.5" align="left"></a-text>
+
+    <a-text value="Alatan: Kain Putih 60, Kapas, Kapur Barus, Air Mawar, Minyak Atar, Gunting"
+            position="0 0.03 -0.45" rotation="-90 0 0"
+            color="#90EE90" width="5" align="center"></a-text>
+
+    <a-plane position="0 0.02 -0.88" rotation="-90 0 0"
+             width="3" height="0.28" color="#1a0030"></a-plane>
+    <a-text value="Hadith: Kafankan dengan kain putih — sebaik-baik pakaian"
+            position="0 0.03 -0.88" rotation="-90 0 0"
+            color="#FFD700" width="5" align="center"></a-text>
+  </a-marker>
+
+  <!-- ══════════════════════════════════
+  MODUL 2C — BARCODE 1 — Solat
+  ══════════════════════════════════ -->
+  <a-marker type="barcode" value="1">
+    <a-plane position="0 0.01 0" rotation="-90 0 0"
+             width="3" height="2.6"
+             color="#00000f" opacity="0.98"></a-plane>
+
+    <a-plane position="0 0.02 1.05" rotation="-90 0 0"
+             width="3" height="0.38" color="#000055"></a-plane>
+    <a-text value="MODUL 2C: SOLAT JENAZAH — 4 TAKBIR"
+            position="0 0.03 1.05" rotation="-90 0 0"
+            color="#87CEEB" width="5" align="center"></a-text>
+
+    <a-text value="TAKBIR 1: Niat + Baca Al-Fatihah
+
+TAKBIR 2: Baca Selawat Ibrahim
+
+TAKBIR 3: Doa untuk jenazah
+  Lelaki: Allahummaghfirlahu
+          warhamhu wa aafihii
+  Perempuan: Allahummaghfirlaha
+             warhamha wa aafiha
+
+TAKBIR 4: Doa umum + Salam kanan & kiri"
+            position="0 0.03 0.3" rotation="-90 0 0"
+            color="#FFFFFF" width="5" align="left"></a-text>
+
+    <a-plane position="0 0.02 -0.82" rotation="-90 0 0"
+             width="3" height="0.42" color="#1a1a00"></a-plane>
+    <a-text value="Imam: Setentang KEPALA (lelaki)
+Setentang PINGGANG (perempuan)"
+            position="0 0.03 -0.82" rotation="-90 0 0"
+            color="#FFD700" width="5" align="center"></a-text>
+  </a-marker>
+
+  <!-- ══════════════════════════════════
+  MODUL 2D — BARCODE 2 — Kebumikan
+  ══════════════════════════════════ -->
+  <a-marker type="barcode" value="2">
+    <a-plane position="0 0.01 0" rotation="-90 0 0"
+             width="3" height="2.6"
+             color="#050d00" opacity="0.98"></a-plane>
+
+    <a-plane position="0 0.02 1.05" rotation="-90 0 0"
+             width="3" height="0.38" color="#1a3300"></a-plane>
+    <a-text value="MODUL 2D: MENGEBUMIKAN JENAZAH"
+            position="0 0.03 1.05" rotation="-90 0 0"
+            color="#90EE90" width="5" align="center"></a-text>
+
+    <a-text value="Ukuran: Dalam 7 KAKI | Lebar 3 KAKI
+Jenis: LAHAD (sisi) lebih afdhal untuk Islam"
+            position="0 0.03 0.65" rotation="-90 0 0"
+            color="#FFD700" width="5" align="center"></a-text>
+
+    <a-text value="5 TATACARA PENGEBUMIAN:
+
+1. Letak jenazah dalam lahad
+   Lambung kanan — hadap Kiblat
+
+2. Turunkan dengan cermat dan lembut
+
+3. Sandar dengan tanah supaya tak terbalik
+
+4. Tutup liang lahad
+
+5. Timbuskan tanah perlahan-lahan"
+            position="0 0.03 0.05" rotation="-90 0 0"
+            color="#FFFFFF" width="5" align="left"></a-text>
+
+    <a-plane position="0 0.02 -0.85" rotation="-90 0 0"
+             width="3" height="0.38" color="#002200"></a-plane>
+    <a-text value="Doa: Bismillahi wa ala millati Rasulillah
+Malaysia: Kepala ke UTARA | Muka ke BARAT LAUT"
+            position="0 0.03 -0.85" rotation="-90 0 0"
+            color="#90EE90" width="5" align="center"></a-text>
+  </a-marker>
+
+  <!-- ══════════════════════════════════
+  MODUL 3 — BARCODE 3 — Hikmah
+  ══════════════════════════════════ -->
+  <a-marker type="barcode" value="3">
+    <a-plane position="0 0.01 0" rotation="-90 0 0"
+             width="3" height="2.4"
+             color="#100800" opacity="0.98"></a-plane>
+
+    <a-plane position="0 0.02 0.95" rotation="-90 0 0"
+             width="3" height="0.38" color="#3a1800"></a-plane>
+    <a-text value="MODUL 3: PENGAJARAN DAN HIKMAH"
+            position="0 0.03 0.95" rotation="-90 0 0"
+            color="#FFA500" width="5" align="center"></a-text>
+
+    <a-text value="3 AMALAN TIDAK PUTUS SELEPAS MATI:"
+            position="0 0.03 0.58" rotation="-90 0 0"
+            color="#FFD700" width="5" align="center"></a-text>
+
+    <a-text value="SEDEKAH JARIAH
+Amalan yang manfaatnya berterusan
+
+ILMU YANG BERMANFAAT
+Ilmu yang diajar dan diamalkan
+
+DOA ANAK YANG SOLEH
+Doa anak untuk ibu bapa"
+            position="0 0.03 0.05" rotation="-90 0 0"
+            color="#FFFFFF" width="5" align="left"></a-text>
+
+    <a-plane position="0 0.02 -0.78" rotation="-90 0 0"
+             width="3" height="0.32" color="#2a1200"></a-plane>
+    <a-text value="Hadith: Perbanyakkan mengingati pemutus kelazatan — kematian"
+            position="0 0.03 -0.78" rotation="-90 0 0"
+            color="#FFD700" width="5" align="center"></a-text>
+
+    <a-sphere position="-0.9 0.8 0" radius="0.08" color="#FFD700">
+      <a-animation attribute="position"
+                   from="-0.9 0.4 0" to="-0.9 1.1 0"
+                   direction="alternate" dur="2500"
+                   repeat="indefinite"></a-animation>
+    </a-sphere>
+    <a-sphere position="0.9 0.8 0" radius="0.08" color="#FFA500">
+      <a-animation attribute="position"
+                   from="0.9 1.1 0" to="0.9 0.4 0"
+                   direction="alternate" dur="3000"
+                   repeat="indefinite"></a-animation>
+    </a-sphere>
+  </a-marker>
+
+  <a-entity camera></a-entity>
+</a-scene>
+
+<div id="ui">
+  <div id="mod-info">🎯 Pilih modul → Scan marker yang berkaitan</div>
+  <div id="tabs">
+    <button class="tab on" onclick="setMod(0)">1️⃣ Sblm Meninggal</button>
+    <button class="tab" onclick="setMod(1)">💧 2A. Memandikan</button>
+    <button class="tab" onclick="setMod(2)">🕊️ 2B. Kafan</button>
+    <button class="tab" onclick="setMod(3)">🤲 2C. Solat</button>
+    <button class="tab" onclick="setMod(4)">⚰️ 2D. Kebumikan</button>
+    <button class="tab" onclick="setMod(5)">✨ 3. Hikmah</button>
+  </div>
+</div>
+
+<script>
+const mods = [
+  {name:"Modul 1: Sebelum Meninggal Dunia", marker:"Scan marker HIRO"},
+  {name:"Modul 2A: Memandikan Jenazah", marker:"Scan marker KANJI"},
+  {name:"Modul 2B: Mengkafankan Jenazah", marker:"Scan BARCODE nombor 0"},
+  {name:"Modul 2C: Menyolatkan Jenazah", marker:"Scan BARCODE nombor 1"},
+  {name:"Modul 2D: Mengebumikan Jenazah", marker:"Scan BARCODE nombor 2"},
+  {name:"Modul 3: Pengajaran dan Hikmah", marker:"Scan BARCODE nombor 3"}
+];
+
+function setMod(i) {
+  document.querySelectorAll('.tab')
+    .forEach((t,j) => t.classList.toggle('on', i===j));
+  document.getElementById('mod-info').innerHTML =
+    `📖 <b>${mods[i].name}</b><br>🎯 ${mods[i].marker}`;
+}
+
+document.querySelectorAll('a-marker').forEach((m, i) => {
+  m.addEventListener('markerFound', () => {
+    const h = document.getElementById('hint');
+    h.textContent = '✅ Marker dikesan! Terokai kandungan AR';
+    h.classList.add('found');
+    setMod(i);
+  });
+  m.addEventListener('markerLost', () => {
+    const h = document.getElementById('hint');
+    h.textContent = '📸 Arahkan kamera ke marker';
+    h.classList.remove('found');
+  });
+});
+
+setMod(0);
+</script>
+</body>
+</html>
